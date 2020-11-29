@@ -1,0 +1,7 @@
+{
+    "mxid": "@photobot:matrix.org",
+    "access_token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "device_id": "XXXXXXXXXX",
+    "homeserver_url": "https://matrix.org",
+    "target_room": "!liaDifilIFFIJE:matrix.org"
+}
