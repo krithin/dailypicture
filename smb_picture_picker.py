@@ -75,7 +75,7 @@ class SMBPicturePicker:
                 )
                 f.seek(0)
 
-                print(smb_filename, file_size, file_attributes)
+                print(f"Name: {smb_filename}, size: {file_size} bytes")
                 return f
         else:
             raise NoFileError(f"Couldn't pick a file under {base_dir}")

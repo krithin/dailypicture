@@ -81,9 +81,11 @@ async def post_picture_to_room(matrix_config: MatrixConfig, image: Image) -> Non
     f = io.BytesIO()
 
     image.save(f, format="JPEG", optimize=True, progressive=True)
+
+    # Get the (post-resize) file size
     f.seek(0, io.SEEK_END)
     image_file_size = f.tell()
-    print(image_file_size)
+    print(f"Image resized down to {image_file_size} bytes")
     f.seek(0)  # rewind to the start
 
     # First upload the image and get an MXC URI in response
@@ -93,9 +95,7 @@ async def post_picture_to_room(matrix_config: MatrixConfig, image: Image) -> Non
         filesize=image_file_size
     )
 
-    if isinstance(resp, UploadResponse):
-        print("Image was successfully uploaded to the server")
-    else:
+    if not isinstance(resp, UploadResponse):
         raise RuntimeError(f"Failed to send image: {resp}")
 
     # Then send a (image) message to the room pointing to the uploaded image's MXC URI.
