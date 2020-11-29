@@ -1,6 +1,6 @@
 {
     "server_name": "my_smb_server",
-    "server_ip": "maybe_same_as_server_name",
+    "server_ip": "optional_if_same_as_server_name",
     "share_name": "photo",
     "username": "dailypicture",
     "password": "password"

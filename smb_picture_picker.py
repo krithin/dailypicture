@@ -1,11 +1,11 @@
+import io
 import os
 import random
 import smb
 from smb import SMBConnection, smb_constants
-import tempfile
 
 FORBIDDEN_DIR_NAMES = [".", "..", ".Thumbnails"]
-ALLOWED_FILE_EXTENSIONS = [".jpg"]
+ALLOWED_FILE_EXTENSIONS = [".jpg", ".png"]
 MAX_FILE_SIZE_BYTES = 1024 * 1024 * 20  # 20 MB
 
 def _matches_allowed_file(sf: smb.base.SharedFile) -> bool:
@@ -41,7 +41,7 @@ class SMBPicturePicker:
         self.smb_share = share
         self.random = random.SystemRandom()
     
-    def pick(self, base_dir = '/', max_depth = 5) -> tempfile.SpooledTemporaryFile:
+    def pick(self, base_dir = '/', max_depth = 5) -> io.BytesIO:
         """Recursively goes through the directory tree to pick a random jpg file.
         
         Does not backtrack: will raise NoFileError if it's caught in a dead end with
@@ -67,15 +67,15 @@ class SMBPicturePicker:
                 )
             else:
                 smb_filename = os.path.join(base_dir, choice.filename)
-                fp = tempfile.SpooledTemporaryFile()
+                f = io.BytesIO()
                 file_attributes, file_size = self.conn.retrieveFile(
                     self.smb_share,
                     smb_filename,
-                    fp
+                    f
                 )
-                fp.seek(0)
+                f.seek(0)
 
                 print(smb_filename, file_size, file_attributes)
-                return fp
+                return f
         else:
             raise NoFileError(f"Couldn't pick a file under {base_dir}")
