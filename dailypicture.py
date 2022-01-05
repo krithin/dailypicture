@@ -125,6 +125,4 @@ async def post_picture_to_room(matrix_config: MatrixConfig, image: Image) -> Non
 
 if __name__ == '__main__':
     image = get_random_picture(read_smb_config())
-    asyncio.get_event_loop().run_until_complete(
-        post_picture_to_room(read_matrix_config(), image)
-    )
+    asyncio.run(post_picture_to_room(read_matrix_config(), image))
